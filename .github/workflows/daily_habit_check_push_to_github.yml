@@ -25,6 +25,10 @@ jobs:
         with:
           python-version: '3.10'
       - name: Get Latest Events
+        env:
+          taskade_api_pat: ${{ secrets.TASKADE_API_PAT }}
+          taskade_reoccurring_project_id: ${{ secrets.TASKADE_REOCCURRING_PROJECT_ID }}
+          taskade_reoccurring_push_to_github_task_id: ${{ secrets.TASKADE_REOCCURRING_PUSH_SOMETHING_TO_GITHUB_TASK_ID }}
         run: |
           python -c '
           import json
@@ -41,7 +45,19 @@ jobs:
           events_interested_in_leetcode_dailies_only = list(filter(lambda x: x["type"] == "PushEvent" and "repo" in x and x["repo"]["name"] == "yyolk/leetcode_dailies", data))
           push_events = list(filter(lambda x: x["type"] == "PushEvent", data))
           for event in push_events:
+            if (dtelta := (datetime.now() - datetime.strptime(event["created_at"], "%Y-%m-%dT%H:%M:%SZ"))).days == 0:
+              print(True)
+              url_task_complete = "https://www.taskade.com/api/v1/projects/'"${taskade_reoccurring_project_id}"'/tasks/'"${taskade_reoccurring_push_to_github_task_id}"'/complete"
+              headers = {
+                "Authorization": "Bearer '"${taskade_api_pat}"'"
+              }
+              request = urllib.request.Request(url_task_complete, headers=headers)
+              response = urllib.request.urlopen(request)
+              print(response.code)
+              break
             print(datetime.now() - datetime.strptime(event["created_at"], "%Y-%m-%dT%H:%M:%SZ"))
+          else:
+            print(False)
           '
           
       # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
