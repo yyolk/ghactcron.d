@@ -37,7 +37,8 @@ jobs:
           response = urllib.request.urlopen(request)
           data = json.load(response)
           events_interested_in_leetcode_dailies_only = list(filter(lambda x: x["type"] == "PushEvent" and "repo" in x and x["repo"]["name"] == "yyolk/leetcode_dailies", data))
-          for event in events_interested_in_leetcode_dailies_only:
+          push_events = list(filter(lambda x: x["type"] == "PushEvent", data))
+          for event in push_events:
             print(datetime.now() - datetime.strptime(event["created_at"], "%Y-%m-%dT%H:%M:%SZ"))
           '
           
