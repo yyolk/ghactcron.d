@@ -31,6 +31,7 @@ jobs:
           taskade_api_pat: ${{ secrets.TASKADE_API_PAT }}
           taskade_reoccurring_project_id: ${{ secrets.TASKADE_REOCCURRING_PROJECT_ID }}
           taskade_reoccurring_push_to_github_task_id: ${{ secrets.TASKADE_REOCCURRING_PUSH_SOMETHING_TO_GITHUB_TASK_ID }}
+          taskade_reoccurring_leetcode_daily_task_id: ${{ secrets.TASKADE_REOCCURRING_LEETCODE_DAILY_TASK_ID }}
         run: python -m check_push_to_github
 
 
