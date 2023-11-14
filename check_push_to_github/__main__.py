@@ -34,12 +34,13 @@ for event in push_events:
         )
     ).days == 0:
         print(True)
+        url_task_complete = f"https://www.taskade.com/api/v1/projects/{taskade_reoccurring_project_id}/tasks/{taskade_reoccurring_push_to_github_task_id}/complete"
+        headers = {"Authorization": f"Bearer {taskade_api_pat}"}
+        request = urllib.request.Request(url_task_complete, method="POST", headers=headers)
+        with urllib.request.urlopen(request) as response:
+            print(response.code)
         break
     print(datetime.now() - datetime.strptime(event["created_at"], "%Y-%m-%dT%H:%M:%SZ"))
-url_task_complete = f"https://www.taskade.com/api/v1/projects/{taskade_reoccurring_project_id}/tasks/{taskade_reoccurring_push_to_github_task_id}/complete"
-headers = {"Authorization": f"Bearer {taskade_api_pat}"}
-request = urllib.request.Request(url_task_complete, headers=headers, method="POST")
-with urllib.request.urlopen(request) as response:
-    print(response.code)
+
 else:
     print(False, "no push events today")
