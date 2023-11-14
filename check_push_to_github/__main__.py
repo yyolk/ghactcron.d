@@ -15,8 +15,8 @@ taskade_reoccurring_push_to_github_task_id = os.environ[
 taskade_reoccurring_project_id = os.environ["taskade_reoccurring_project_id"]
 taskade_api_pat = os.environ["taskade_api_pat"]
 request = urllib.request.Request(github_event_url, headers=headers)
-response = urllib.request.urlopen(request)
-data = json.load(response)
+with urllib.request.urlopen(request) as response:
+    data = json.load(response)
 events_interested_in_leetcode_dailies_only = list(
     filter(
         lambda x: x["type"] == "PushEvent"
@@ -36,9 +36,9 @@ for event in push_events:
         print(True)
         url_task_complete = f"https://www.taskade.com/api/v1/projects/{taskade_reoccurring_project_id}/tasks/{taskade_reoccurring_push_to_github_task_id}/complete"
         headers = {"Authorization": f"Bearer {taskade_api_pat}"}
-        request = urllib.request.Request(url_task_complete, headers=headers)
-        response = urllib.request.urlopen(request)
-        print(response.code)
+        request = urllib.request.Request(url_task_complete, headers=headers, method="POST")
+        with urllib.request.urlopen(request) as response:
+            print(response.code)
         break
     print(datetime.now() - datetime.strptime(event["created_at"], "%Y-%m-%dT%H:%M:%SZ"))
 else:
