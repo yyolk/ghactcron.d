@@ -5,7 +5,7 @@ name: Daily Habit - Check Push To GitHub
 # Controls when the workflow will run
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 4 * * *'  # 10pm CST, 4AM UTC
     # '0 0/4 * * *'  # every 4th hour from 0-23
 
   # Allows you to run this workflow manually from the Actions tab
