@@ -20,6 +20,8 @@ jobs:
     environment: prod
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
       - name: Setup Python
         uses: actions/setup-python@v4.7.1
         with:
@@ -30,9 +32,7 @@ jobs:
           taskade_reoccurring_project_id: ${{ secrets.TASKADE_REOCCURRING_PROJECT_ID }}
           taskade_reoccurring_push_to_github_task_id: ${{ secrets.TASKADE_REOCCURRING_PUSH_SOMETHING_TO_GITHUB_TASK_ID }}
         run: python -m check_push_to_github
-          
-      # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - uses: actions/checkout@v3
+
 
       # # Runs a single command using the runners shell
       # - name: Run a one-line script
